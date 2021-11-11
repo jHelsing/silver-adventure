@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'checkstyle'
+    id 'jacoco' // Uses default $buildDir/reports/jacoco
 }
 
 repositories {
@@ -14,4 +15,12 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+    dependsOn test // Tests are required to run before generating the report
 }
