@@ -19,6 +19,7 @@ sonarqube {
         property "sonar.projectKey", "jHelsing_silver-adventure"
         property "sonar.organization", "jhelsing-1"
         property "sonar.host.url", "https://sonarcloud.io"
+        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/*'
     }
 }
 
@@ -31,5 +32,9 @@ test {
 }
 
 jacocoTestReport {
+    reports {
+        xml.required  = true
+        csv.required = false
+    }
     dependsOn test // Tests are required to run before generating the report
 }
