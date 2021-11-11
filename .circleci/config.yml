@@ -10,7 +10,7 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       # specify the version you desire here
-      - image: circleci/openjdk:17-jdk-buster
+      - image: cimg/openjdk:17.0.0
 
     working_directory: ~/repo
 
@@ -41,7 +41,7 @@ jobs:
 
   Unit_Tests:
     docker: 
-      - image: circleci/openjdk:17-jdk-buster
+      - image: cimg/openjdk:17.0.0
     working_directory: ~/repo
     environment:
       JVM_OPTS: -Xmx1536m
@@ -58,7 +58,7 @@ jobs:
 
   Acceptance_Test:
     docker: 
-      - image: circleci/openjdk:17-jdk-buster
+      - image: cimg/openjdk:17.0.0
     working_directory: ~/repo
     environment:
       JVM_OPTS: -Xmx1536m
