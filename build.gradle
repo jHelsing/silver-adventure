@@ -12,15 +12,7 @@ repositories {
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-}
-
-sonarqube {
-    properties {
-        property "sonar.projectKey", "jHelsing_silver-adventure"
-        property "sonar.organization", "jhelsing-1"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/*'
-    }
+    testImplementation 'io.cucumber:cucumber-java:7.0.0'
 }
 
 tasks.named('test') {
@@ -37,4 +29,30 @@ jacocoTestReport {
         csv.required = false
     }
     dependsOn test // Tests are required to run before generating the report
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "jHelsing_silver-adventure"
+        property "sonar.organization", "jhelsing-1"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/*'
+    }
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+task cucumber {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', 'gradle.cucumber', 'src/test/resources/features']
+        }
+    }
 }
