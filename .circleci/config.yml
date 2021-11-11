@@ -5,7 +5,7 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  build:
+  Build:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
@@ -39,7 +39,7 @@ jobs:
 
       - run: gradle build
 
-  test:
+  Unit_Tests:
     docker: 
       - image: circleci/openjdk:17-jdk-buster
     working_directory: ~/repo
@@ -56,11 +56,32 @@ jobs:
       - run: gradle test
       - run: gradle sonarqube
 
+  Acceptance_Test:
+    docker: 
+      - image: circleci/openjdk:17-jdk-buster
+    working_directory: ~/repo
+    environment:
+      JVM_OPTS: -Xmx1536m
+      TERM: dumb
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: gradle test
+
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.2
 
 workflows:
   build_and_test:
     jobs:
-      - build
-      - test
+      - Build
+      - Unit_Tests:
+          requires:
+            - Build
+      - Acceptance_Test:
+          requires:
+            - Build
