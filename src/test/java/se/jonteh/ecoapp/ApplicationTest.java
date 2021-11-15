@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ApplicationTest {
 
-    @Test
-    void testSomething() {
-        assertEquals(8, 4*2);
-    }
+  @Test
+  void testSomething() {
+    assertEquals(8, 4 * 2);
+  }
 }
