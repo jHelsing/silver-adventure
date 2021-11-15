@@ -54,7 +54,8 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run: gradle test
-      - run: gradle spotbugsMain -xml=build/reports/spotbugs
+      - run: gradle spotbugsMain
+      - run: gradle checkstyleMain
       - run: gradle sonarqube
 
   Acceptance_Test:
